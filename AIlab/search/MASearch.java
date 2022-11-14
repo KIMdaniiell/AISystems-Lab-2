@@ -70,11 +70,11 @@ public class MASearch {
                             getDistanceFromFinish(c),
                             previousCityDistance + distanceFromPrevious + getDistanceFromFinish(c));
                 }
-            }**/
+            }*/
 
             //Найти следующий город
             city = chooseNextCity(city);
-            //System.out.printf("\t ----> \t%s\n", city.getName());
+            /**System.out.printf("\t ----> \t%s\n\n", city.getName());*/
             if ((city.equals(startCity) && cityPath.size()>1)) {
                 break;
             }
