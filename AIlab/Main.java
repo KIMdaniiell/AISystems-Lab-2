@@ -11,7 +11,7 @@ public class Main {
         CityParser cityParser = new CityParser("src\\input.txt", " ");
         cityParser.parse();
 
-        City start = cityParser.getCityFromMap("Москва");
+        City start = cityParser.getCityFromMap("Самара");
         City finish = cityParser.getCityFromMap("Ярославль");
 
         System.out.println("[поиск в глубину]"); printList(DepthSearch.search(start, finish));
@@ -40,7 +40,7 @@ public class Main {
             System.out.print("\t");
             linkedlist.forEach(city -> System.out.print(city.toString() + " - "));
             if (last != null) System.out.print(last.toString());
-            System.out.printf(" [%d]\n", length);
+            System.out.printf("\nДлина получившегося пути = [%d]\n\n", length);
         } else {
             System.out.println("-не удалось найти путь-");
         }
