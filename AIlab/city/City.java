@@ -1,4 +1,4 @@
-package AIlab;
+package AIlab.city;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -10,10 +10,6 @@ public class City {
     public City(String name) {
         this.name = name;
         nextCities = new LinkedHashMap<>();
-    }
-
-    public HashMap<City, Integer> getNextCities() {
-        return this.nextCities;
     }
 
     public boolean isNext(City city) {
@@ -30,6 +26,14 @@ public class City {
         }
     }
 
+    public HashMap<City, Integer> getNextCities() {
+        return this.nextCities;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
     @Override
     public boolean equals (Object object) {
         if (this == object) return true;
@@ -42,10 +46,6 @@ public class City {
 
     @Override
     public String toString () {
-        return this.name;
-    }
-
-    public String getName() {
         return this.name;
     }
 }
