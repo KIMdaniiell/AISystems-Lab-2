@@ -27,7 +27,7 @@ public class Main {
 
         System.out.println("\n"+"=".repeat(100)+"\n");
 
-        /*Запуск неинформированных алгоритмов поиска*/
+        /*Запуск информированных алгоритмов поиска*/
         City start = citiesDataParser.getCityFromMap("Самара");
         City finish = citiesDataParser.getCityFromMap("Ярославль");
 
