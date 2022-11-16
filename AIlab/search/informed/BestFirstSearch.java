@@ -1,28 +1,31 @@
-package AIlab.search;
+package AIlab.search.informed;
 
-import AIlab.City;
-import AIlab.CityParser;
+import AIlab.city.City;
+import AIlab.city.CityParser;
 
 import java.util.*;
 
-public class BestFirstSearch {
-    private static LinkedList<City> cityPath;
-    private static HashSet<City> visitedCities;
-    private static CityParser cityDistanceParser;
-    private static String finishCityName;
+public class BestFirstSearch implements InformedSearch{
+    private LinkedList<City> cityPath;
+    private HashSet<City> visitedCities;
+    private CityParser cityDistanceParser;
+    private String finishCityName;
 
-    public static LinkedList<City> search (City startCity, City finishCity) {
+    public BestFirstSearch (CityParser cityDistanceParser) {
+        this.cityDistanceParser = cityDistanceParser;
+    }
+
+    public LinkedList<City> search (City startCity, City finishCity) {
         cityPath  = new LinkedList<>();
         visitedCities = new HashSet<>();
 
         if (startCity != null && !startCity.getNextCities().isEmpty())
             finishCityName = finishCity.getName();
-            cityDistanceParser = new CityParser("src\\input2.txt", " ");
             searchR(startCity, finishCity);
         return cityPath;
     }
 
-    private static void searchR (City startCity, City finishCity) {
+    private void searchR (City startCity, City finishCity) {
         City city = startCity;
         do {
             //Добавить город в путь
@@ -46,7 +49,7 @@ public class BestFirstSearch {
 
     }
 
-    private static City chooseNextCity(City city) {
+    private City chooseNextCity(City city) {
         City nextCity = findNextNotVisited(city);
         if (nextCity == null) {
             nextCity = goBack(city);
@@ -54,7 +57,7 @@ public class BestFirstSearch {
         return nextCity;
     }
 
-    protected static City findNextNotVisited (City city) {
+    protected City findNextNotVisited (City city) {
         LinkedList<City> list = sortCities(city.getNextCities().keySet());
         for (City nextCity : list) {
             if (!wasVisited(nextCity)) return nextCity;
@@ -62,7 +65,7 @@ public class BestFirstSearch {
         return null;
     }
 
-    private static City goBack (City city) {
+    private City goBack (City city) {
         LinkedList<City> reverseCityPath = new LinkedList<>();
         ListIterator<City> cityPathIterator =  cityPath.listIterator(cityPath.size()-1);
         while (findNextNotVisited(city) == null && !city.equals(cityPath.getFirst())) {
@@ -80,11 +83,11 @@ public class BestFirstSearch {
         return city;
     }
 
-    private static boolean wasVisited (City city) {
+    private boolean wasVisited (City city) {
         return visitedCities.contains(city);
     }
 
-    private static LinkedList<City> sortCities(Set<City> cities) {
+    private LinkedList<City> sortCities(Set<City> cities) {
         LinkedList<City> list = new LinkedList<>(cities);
         list.sort((city1, city2) -> {
             int distance1 = getDistanceFromFinish(city1);
@@ -94,8 +97,7 @@ public class BestFirstSearch {
         return list;
     }
 
-    private static int getDistanceFromFinish (City city) {
-        cityDistanceParser.parse();
+    private int getDistanceFromFinish (City city) {
         City finalCity = cityDistanceParser.getCityFromMap(finishCityName);
         String cityName = city.getName();
         City cityDistancedFromFinish = cityDistanceParser.getCityFromMap(cityName);

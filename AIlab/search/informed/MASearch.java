@@ -1,30 +1,33 @@
-package AIlab.search;
+package AIlab.search.informed;
 
-import AIlab.City;
-import AIlab.CityParser;
+import AIlab.city.City;
+import AIlab.city.CityParser;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
-public class MASearch {
-    private static LinkedList<City> cityPath;
-    private static HashMap<City, Integer> visitedCitiesWithDistance;
-    private static CityParser cityDistanceParser;
-    private static String finishCityName;
+public class MASearch implements InformedSearch{
+    private LinkedList<City> cityPath;
+    private HashMap<City, Integer> visitedCitiesWithDistance;
+    private CityParser cityDistanceParser;
+    private String finishCityName;
 
-    public static LinkedList<City> search (City startCity, City finishCity) {
+    public MASearch (CityParser cityDistanceParser) {
+        this.cityDistanceParser = cityDistanceParser;
+    }
+
+    public LinkedList<City> search (City startCity, City finishCity) {
         cityPath = new LinkedList<>();
         visitedCitiesWithDistance = new HashMap<>();
 
         if (startCity != null && !startCity.getNextCities().isEmpty())
             finishCityName = finishCity.getName();
-            cityDistanceParser = new CityParser("src\\input2.txt", " ");
             searchR(startCity, finishCity);
         return cityPath;
     }
 
-    private  static void searchR (City startCity, City finishCity) {
+    private void searchR (City startCity, City finishCity) {
         City city = startCity;
         do {
             //Добавить город в путь
@@ -82,7 +85,7 @@ public class MASearch {
         cityPath.addLast(city);
     }
 
-    private static City chooseNextCity(City city) {
+    private City chooseNextCity(City city) {
         City nextCity = findNextAbleToVisit(city);
         if (nextCity == null) {
             nextCity = goBack(city);
@@ -90,7 +93,7 @@ public class MASearch {
         return nextCity;
     }
 
-    private static City findNextAbleToVisit (City city) {
+    private City findNextAbleToVisit (City city) {
         LinkedList<City> list = sortCities(city.getNextCities().keySet());
         for (City nextCity : list) {
             if (isAbleToVisit(nextCity)) return nextCity;
@@ -98,7 +101,7 @@ public class MASearch {
         return null;
     }
 
-    private static City goBack (City city) {
+    private City goBack (City city) {
         do {
             cityPath.removeLast();
             city = cityPath.getLast();
@@ -107,11 +110,11 @@ public class MASearch {
         return city;
     }
 
-    private static boolean wasVisited (City city) {
+    private boolean wasVisited (City city) {
         return visitedCitiesWithDistance.containsKey(city);
     }
 
-    private static boolean isAbleToVisit (City city) {
+    private boolean isAbleToVisit (City city) {
         City currentCity = cityPath.getLast();
         int currentDistance = visitedCitiesWithDistance.get(currentCity);
         int currentDepthToNext = currentDistance + currentCity.getNextCities().get(city);
@@ -122,7 +125,7 @@ public class MASearch {
         return true;
     }
 
-    private static LinkedList<City> sortCities(Set<City> cities) {
+    private LinkedList<City> sortCities(Set<City> cities) {
         LinkedList<City> list = new LinkedList<>(cities);
         list.sort((city1, city2) -> {
             int distance1 = getDistanceFromFinish(city1);
@@ -134,7 +137,7 @@ public class MASearch {
         return list;
     }
 
-    private static int getDistanceFromFinish (City city) {
+    private int getDistanceFromFinish (City city) {
         cityDistanceParser.parse();
         City finalCity = cityDistanceParser.getCityFromMap(finishCityName);
         String cityName = city.getName();
