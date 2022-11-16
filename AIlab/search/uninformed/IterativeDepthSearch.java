@@ -1,16 +1,24 @@
 package AIlab.search.uninformed;
 
-import AIlab.City;
+import AIlab.city.City;
 
 import java.util.LinkedList;
 
 
-public class IterativeDepthSearch {
-    public static LinkedList<City> search (City startCity, City finishCity, int startingLimit, int endingLimit) {
+public class IterativeDepthSearch implements UninformedSearch{
+    private int startingLimit = 5, maxLimit = 5;
+
+    public IterativeDepthSearch(int startingLimit, int maxLimit) {
+        this.startingLimit = startingLimit;
+        this.maxLimit = maxLimit;
+    }
+
+    public LinkedList<City> search (City startCity, City finishCity) {
         LinkedList<City> cityPath = new LinkedList<>();
 
-        for (int i = startingLimit; i<=endingLimit; i++) {
-            LinkedList<City> currentIterationResult = RestrictedDepthSearch.search(startCity, finishCity, i);
+        for (int i = startingLimit; i<=maxLimit; i++) {
+            RestrictedDepthSearch restrictedDepthSearch = new RestrictedDepthSearch(i);
+            LinkedList<City> currentIterationResult = restrictedDepthSearch.search(startCity, finishCity);
 //            currentIterationResult.forEach(o ->System.out.printf("   %s",o));
 //            System.out.printf("\t\t [%d]\n",i);
             cityPath.addAll(currentIterationResult);

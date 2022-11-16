@@ -1,16 +1,16 @@
 package AIlab.search.uninformed;
 
-import AIlab.City;
+import AIlab.city.City;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-public class BreadthSearch {
-    private static LinkedList<City> cityPath;
-    private static HashMap<City, City> visitedCitiesWithPrevious;
+public class BreadthSearch implements UninformedSearch{
+    private LinkedList<City> cityPath;
+    private HashMap<City, City> visitedCitiesWithPrevious;
 
-    public static LinkedList<City> search(City startCity, City finishCity) {
+    public LinkedList<City> search(City startCity, City finishCity) {
         cityPath = new LinkedList<>();
         visitedCitiesWithPrevious = new HashMap<>();
 
@@ -19,7 +19,7 @@ public class BreadthSearch {
         return getCityPath(startCity, finishCity);
     }
 
-    private static void searchR(City startCity, City finishCity) {
+    private void searchR(City startCity, City finishCity) {
         HashSet<City> currentCities = new HashSet<>();
         HashSet<City> nextCities = new HashSet<>();
         currentCities.add(startCity);
@@ -43,7 +43,7 @@ public class BreadthSearch {
         }
     }
 
-    private static LinkedList<City> getCityPath(City start, City finish) {
+    private LinkedList<City> getCityPath(City start, City finish) {
         if (visitedCitiesWithPrevious.containsKey(finish)) {
             City nextCity, city;
             city = finish;

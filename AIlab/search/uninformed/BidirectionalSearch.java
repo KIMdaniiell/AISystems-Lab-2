@@ -1,26 +1,25 @@
 package AIlab.search.uninformed;
 
-import AIlab.City;
+import AIlab.city.City;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-public class BidirectionalSearch {
-    private static LinkedList<City> cityPath;
-    private static HashMap<City, City> citiesLeft, citiesRight;
+public class BidirectionalSearch implements UninformedSearch {
+    private LinkedList<City> cityPath;
+    private HashMap<City, City> citiesLeft, citiesRight;
 
-    public static LinkedList<City> search(City startCity, City finishCity) {
+    public LinkedList<City> search(City startCity, City finishCity) {
         cityPath = new LinkedList<>();
         citiesLeft = new HashMap<>();
         citiesRight = new HashMap<>();
-
         if (startCity == null || finishCity == null) return cityPath;
         searchR(startCity, finishCity);
         return cityPath;
     }
 
-    private static void searchR(City startCity, City finishCity) {
+    private void searchR(City startCity, City finishCity) {
         HashSet<City> currentCitiesLeft = new HashSet<>();
         HashSet<City> currentCitiesRight = new HashSet<>();
         HashSet<City> nextCitiesLeft = new HashSet<>();
@@ -73,7 +72,7 @@ public class BidirectionalSearch {
         }
     }
 
-    private static LinkedList<City> getCityPath(City start, City middle, City finish) {
+    private LinkedList<City> getCityPath(City start, City middle, City finish) {
         if (citiesLeft.containsKey(middle)) {
             City nextCity, city;
             city = middle;

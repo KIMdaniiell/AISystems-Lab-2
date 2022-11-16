@@ -1,24 +1,29 @@
 package AIlab.search.uninformed;
 
-import AIlab.City;
+import AIlab.city.City;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class RestrictedDepthSearch {
-    private static LinkedList<City> cityPath;
-    private static HashMap<City, Integer> visitedCitiesWithDepth ;
+public class RestrictedDepthSearch implements UninformedSearch {
+    private LinkedList<City> cityPath;
+    private HashMap<City, Integer> visitedCitiesWithDepth ;
+    private int depthLimit = 5;
 
-    public static LinkedList<City> search (City startCity, City finishCity, int limit) {
+    public RestrictedDepthSearch (int depthLimit) {
+        this.depthLimit = depthLimit;
+    }
+
+    public LinkedList<City> search (City startCity, City finishCity) {
         cityPath = new LinkedList<>();
         visitedCitiesWithDepth = new HashMap<>();
 
         if (startCity != null && !startCity.getNextCities().isEmpty())
-            searchR(startCity, finishCity, limit+1);
+            searchR(startCity, finishCity, depthLimit+1);
         return cityPath;
     }
 
-    protected static void searchR (City startCity, City finishCity, int limit) {
+    protected void searchR (City startCity, City finishCity, int limit) {
         City city = startCity;
         do {
             //Добавить город в путь
@@ -44,7 +49,7 @@ public class RestrictedDepthSearch {
         cityPath.addLast(city);
     }
 
-    protected static City chooseNextCity(City city, int limit) {
+    protected City chooseNextCity(City city, int limit) {
         City nextCity = findNextAbleToVisit(city, limit);
         if (nextCity == null) {
             nextCity = goBack(city, limit);
@@ -52,14 +57,14 @@ public class RestrictedDepthSearch {
         return nextCity;
     }
 
-    protected static City findNextAbleToVisit (City city, int limit) {
+    protected City findNextAbleToVisit (City city, int limit) {
         for (City nextCity : city.getNextCities().keySet()) {
             if (isAbleToVisit(nextCity, limit)) return nextCity;
         }
         return null;
     }
 
-    protected static City goBack (City city, int limit) {
+    protected City goBack (City city, int limit) {
         int cursor = cityPath.size()-2;
         do {
             city = cityPath.get(cursor);;
@@ -70,11 +75,11 @@ public class RestrictedDepthSearch {
         return city;
     }
 
-    protected static boolean wasVisited (City city) {
+    protected boolean wasVisited (City city) {
         return visitedCitiesWithDepth.containsKey(city);
     }
 
-    private static boolean isAbleToVisit (City city, int limit) {
+    private boolean isAbleToVisit (City city, int limit) {
         int currentDepth = visitedCitiesWithDepth.get(cityPath.getLast());
         int currentDepthToNext = currentDepth + 1;
         if (wasVisited(city)) {
