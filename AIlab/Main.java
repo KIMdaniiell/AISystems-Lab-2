@@ -82,9 +82,7 @@ public class Main {
         IOManagerl10n ioManagerl10n = new IOManagerl10n(
                 System.getenv("MESSAGES_SOURCE"), LOCAL);
         if (!ioManagerl10n.parseMessageFile()) {
-            System.out.printf(ioManagerl10n.getMessage("error")
-                    + ioManagerl10n.getMessage("fileNameNotFound")
-                    +"\n", "MESSAGES_SOURCE="+System.getenv("MESSAGES_SOURCE"));
+            System.out.printf("ERROR!\t" + "Localisation file [MESSAGES_SOURCE] not found!", "MESSAGES_SOURCE="+System.getenv("MESSAGES_SOURCE"));
             System.exit(1);
         }
         System.out.println(ioManagerl10n.getMessage("l10nSuccess"));
